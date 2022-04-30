@@ -25,6 +25,10 @@ type Claims struct {
 	User User
 }
 
+type ResponseAuth struct {
+	Message string `json:"message"`
+}
+
 func DecodeUser(encode []byte) (user User) {
 	err := json.Unmarshal(encode, &user)
 	helper.Errors(err, "jsonunmarshall(decodeuser)")
