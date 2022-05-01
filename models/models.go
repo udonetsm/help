@@ -61,11 +61,11 @@ func Encode(data interface{}) (encoded []byte) {
 	return
 }
 
-func YamlToStruct(path string, decode interface{}) interface{} {
+func (conf Postgres_conf) StoreConf(path string) Postgres_conf {
 	defer helper.PanicCapture("parseYaml")
 	content, err := ioutil.ReadFile(path)
 	helper.Errors(err, "ioutillreadfile(parseyaml)")
-	err = yaml.Unmarshal(content, &decode)
+	err = yaml.Unmarshal(content, &conf)
 	helper.Errors(err, "yamlunmarshal(parseyaml)")
-	return decode
+	return conf
 }
