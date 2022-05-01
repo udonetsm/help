@@ -61,13 +61,11 @@ func Encode(data interface{}) (encoded []byte) {
 	return
 }
 
-func PgConfStirng(filename string) string {
+func PgConfStirng(filename string, decode interface{}) interface{} {
 	defer helper.PanicCapture("parseYaml")
-	pgconf := Postgres_conf{}
 	content, err := ioutil.ReadFile(helper.Home() + "/" + filename)
 	helper.Errors(err, "ioutillreadfile(parseyaml)")
-	err = yaml.Unmarshal(content, &pgconf)
+	err = yaml.Unmarshal(content, &decode)
 	helper.Errors(err, "yamlunmarshal(parseyaml)")
-	return pgconf.Dbname + pgconf.Dbpassword + pgconf.SslMode +
-		pgconf.Dbhost + pgconf.Dbport + pgconf.Dbuser
+	return decode
 }
