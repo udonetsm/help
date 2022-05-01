@@ -41,6 +41,11 @@ type ResponseAuth struct {
 	Error   string `json:"error,omitempty"`
 }
 
+type Srver_Conf struct {
+	Addr   string `yaml:"addr"`
+	Secret string `yaml:"secret"`
+}
+
 func DecodeUser(encode []byte) (user User) {
 	defer helper.PanicCapture("decodeuser")
 	err := json.Unmarshal(encode, &user)
@@ -62,6 +67,15 @@ func Encode(data interface{}) (encoded []byte) {
 }
 
 func (conf Postgres_conf) StoreConf(path string) Postgres_conf {
+	defer helper.PanicCapture("parseYaml")
+	content, err := ioutil.ReadFile(path)
+	helper.Errors(err, "ioutillreadfile(parseyaml)")
+	err = yaml.Unmarshal(content, &conf)
+	helper.Errors(err, "yamlunmarshal(parseyaml)")
+	return conf
+}
+
+func (conf Srver_Conf) ServerConf(path string) Srver_Conf {
 	defer helper.PanicCapture("parseYaml")
 	content, err := ioutil.ReadFile(path)
 	helper.Errors(err, "ioutillreadfile(parseyaml)")
