@@ -27,6 +27,7 @@ type Claims struct {
 
 type ResponseAuth struct {
 	Message string `json:"message"`
+	Error   string `json:"error"`
 }
 
 func DecodeUser(encode []byte) (user User) {
