@@ -3,6 +3,7 @@ package models
 import (
 	"encoding/json"
 	"io/ioutil"
+	"net/http"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/go-yaml/yaml"
@@ -82,4 +83,19 @@ func (conf Srver_Conf) ServerConf(path string) Srver_Conf {
 	err = yaml.Unmarshal(content, &conf)
 	helper.Errors(err, "yamlunmarshal(parseyaml)")
 	return conf
+}
+
+func (user *User) BuildUser(w http.ResponseWriter, r *http.Request) []byte {
+	r.ParseForm()
+	user.Email = r.FormValue("email")
+	user.Name = r.FormValue("name")
+	user.Dob = r.FormValue("date")
+	return Encode(user)
+}
+
+func (auth *Auth) BuildAuth(w http.ResponseWriter, r *http.Request) []byte {
+	r.ParseForm()
+	auth.Email = r.FormValue("email")
+	auth.Password = r.FormValue("password")
+	return Encode(auth)
 }
