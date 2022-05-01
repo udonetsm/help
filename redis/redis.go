@@ -2,7 +2,6 @@ package redis
 
 import (
 	"github.com/go-redis/redis"
-
 	"github.com/udonetsm/help/helper"
 	"github.com/udonetsm/help/models"
 )
@@ -14,8 +13,7 @@ func NewStore(opts *redis.Options) *redis.Client {
 func NewOpts(username, password string) *redis.Options {
 	return &redis.Options{
 		Addr:     ":6379",
-		Password: password,
-		Username: username,
+		Password: "",
 		DB:       0,
 	}
 }
