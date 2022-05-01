@@ -2,10 +2,21 @@ package models
 
 import (
 	"encoding/json"
+	"io/ioutil"
 
 	"github.com/dgrijalva/jwt-go"
+	"github.com/go-yaml/yaml"
 	"github.com/udonetsm/help/helper"
 )
+
+type Postgres_conf struct {
+	SslMode    string `yaml:"sslmode"`
+	Dbname     string `yaml:"dbname"`
+	Dbpassword string `yaml:"key"`
+	Dbuser     string `yaml:"user"`
+	Dbhost     string `yaml:"host"`
+	Dbport     string `yaml:"port"`
+}
 
 type Auth struct {
 	Uid      string `json:"uid,omitempty"`
@@ -14,10 +25,10 @@ type Auth struct {
 }
 
 type User struct {
-	Uid   string `json:"uid"`
-	Email string `json:"email"`
-	Name  string `json:"name"`
-	Dob   string `json:"dob"`
+	Uid   string `json:"uid,omitempty"`
+	Email string `json:"email,omitempty"`
+	Name  string `json:"name,omitempty"`
+	Dob   string `json:"dob,omitempty"`
 }
 
 type Claims struct {
@@ -26,8 +37,8 @@ type Claims struct {
 }
 
 type ResponseAuth struct {
-	Message string `json:"message"`
-	Error   string `json:"error"`
+	Message string `json:"message,omitempty"`
+	Error   string `json:"error,omitempty"`
 }
 
 func DecodeUser(encode []byte) (user User) {
@@ -48,4 +59,15 @@ func Encode(data interface{}) (encoded []byte) {
 	encoded, err := json.Marshal(data)
 	helper.Errors(err, "jsonmarshall(encode)")
 	return
+}
+
+func PgConfStirng(filename string) string {
+	defer helper.PanicCapture("parseYaml")
+	pgconf := Postgres_conf{}
+	content, err := ioutil.ReadFile(helper.Home() + "/" + filename)
+	helper.Errors(err, "ioutillreadfile(parseyaml)")
+	err = yaml.Unmarshal(content, &pgconf)
+	helper.Errors(err, "yamlunmarshal(parseyaml)")
+	return pgconf.Dbname + pgconf.Dbpassword + pgconf.SslMode +
+		pgconf.Dbhost + pgconf.Dbport + pgconf.Dbuser
 }
