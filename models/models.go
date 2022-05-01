@@ -61,9 +61,9 @@ func Encode(data interface{}) (encoded []byte) {
 	return
 }
 
-func PgConfStirng(filename string, decode interface{}) interface{} {
+func YamlToStruct(path string, decode interface{}) interface{} {
 	defer helper.PanicCapture("parseYaml")
-	content, err := ioutil.ReadFile(helper.Home() + "/" + filename)
+	content, err := ioutil.ReadFile(path)
 	helper.Errors(err, "ioutillreadfile(parseyaml)")
 	err = yaml.Unmarshal(content, &decode)
 	helper.Errors(err, "yamlunmarshal(parseyaml)")
