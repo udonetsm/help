@@ -27,7 +27,7 @@ type Auth struct {
 }
 
 type User struct {
-	Uid   int64  `json:"uid,omitempty" gorm:"authoincrement"`
+	Uid   int64  `json:"uid,omitempty"`
 	Email string `json:"email,omitempty"`
 	Name  string `json:"name,omitempty"`
 	Dob   string `json:"dob,omitempty"`
