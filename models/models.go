@@ -33,10 +33,8 @@ type User struct {
 }
 
 type AUser struct {
-	Auth Auth   `json:"auth"`
-	Uid  string `json:"uid,omitempty"`
-	Name string `json:"name,omitempty"`
-	Dob  string `json:"dob,omitempty"`
+	Auth Auth `json:"auth"`
+	User User `json:"user"`
 }
 
 type Claims struct {
@@ -94,9 +92,10 @@ func (conf Srver_Conf) ServerConf(path string) Srver_Conf {
 
 func (user *AUser) BuildUser(w http.ResponseWriter, r *http.Request) []byte {
 	r.ParseForm()
-	user.Name = r.FormValue("name")
-	user.Dob = r.FormValue("date")
-	user.Auth.Email = r.FormValue("email")
+	user.User.Name = r.FormValue("name")
+	user.User.Dob = r.FormValue("date")
+	user.User.Email = r.FormValue("email")
+	user.Auth.Email = user.User.Email
 	user.Auth.Password = r.FormValue("password")
 	return Encode(user)
 }
