@@ -21,13 +21,13 @@ type Postgres_conf struct {
 }
 
 type Auth struct {
-	Uid      string `json:"uid,omitempty"`
+	Uid      int64  `json:"uid,omitempty"`
 	Email    string `json:"email,omitempty"`
 	Password string `json:"password,omitempty"`
 }
 
 type User struct {
-	Uid   string `json:"uid,omitempty"`
+	Uid   int64  `json:"uid,omitempty"`
 	Email string `json:"email,omitempty"`
 	Name  string `json:"name,omitempty"`
 	Dob   string `json:"dob,omitempty"`
