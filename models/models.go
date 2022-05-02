@@ -32,6 +32,13 @@ type User struct {
 	Dob   string `json:"dob,omitempty"`
 }
 
+type AUser struct {
+	Auth Auth   `json:"auth"`
+	Uid  string `json:"uid,omitempty"`
+	Name string `json:"name,omitempty"`
+	Dob  string `json:"dob,omitempty"`
+}
+
 type Claims struct {
 	jwt.StandardClaims
 	User User
@@ -85,11 +92,12 @@ func (conf Srver_Conf) ServerConf(path string) Srver_Conf {
 	return conf
 }
 
-func (user *User) BuildUser(w http.ResponseWriter, r *http.Request) []byte {
+func (user *AUser) BuildUser(w http.ResponseWriter, r *http.Request) []byte {
 	r.ParseForm()
-	user.Email = r.FormValue("email")
 	user.Name = r.FormValue("name")
 	user.Dob = r.FormValue("date")
+	user.Auth.Email = r.FormValue("email")
+	user.Auth.Password = r.FormValue("password")
 	return Encode(user)
 }
 
