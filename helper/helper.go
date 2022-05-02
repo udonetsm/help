@@ -5,8 +5,6 @@ import (
 	"encoding/base64"
 	"log"
 	"os"
-
-	"golang.org/x/crypto/bcrypt"
 )
 
 func Errors(err error, funcname string) {
@@ -30,12 +28,4 @@ func Sha512Hasher(for_hsh string) string {
 	hasher := sha512.New()
 	hasher.Write([]byte(for_hsh))
 	return base64.URLEncoding.EncodeToString(hasher.Sum(nil))
-}
-
-func BcryptHasher(str string) string {
-	hash, err := bcrypt.GenerateFromPassword([]byte(str), 10)
-	if err != nil {
-		log.Fatal(err)
-	}
-	return string(hash)
 }
