@@ -8,7 +8,6 @@ import (
 	"github.com/dgrijalva/jwt-go"
 	"github.com/go-yaml/yaml"
 	"github.com/udonetsm/help/helper"
-	"golang.org/x/crypto/bcrypt"
 )
 
 type Postgres_conf struct {
@@ -106,10 +105,4 @@ func (auth *Auth) BuildAuth(w http.ResponseWriter, r *http.Request) []byte {
 	auth.Email = r.FormValue("email")
 	auth.Password = r.FormValue("password")
 	return Encode(auth)
-}
-
-func Hash(str string) string {
-	hash, err := bcrypt.GenerateFromPassword([]byte(str), 10)
-	helper.Errors(err, "generatefrompassword(bcrypt, hash)")
-	return string(hash)
 }
