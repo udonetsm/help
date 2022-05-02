@@ -99,6 +99,7 @@ func (user *AUser) BuildUser(w http.ResponseWriter, r *http.Request) []byte {
 	user.User.Dob = r.FormValue("date")
 	user.User.Email = r.FormValue("email")
 	user.Auth.Email = user.User.Email
+	user.Auth.Uid = user.User.Uid
 	user.Auth.Password = BcryptHasher(r.FormValue("password"))
 	return Encode(user)
 }
