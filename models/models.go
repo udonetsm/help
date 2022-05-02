@@ -7,6 +7,7 @@ import (
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/go-yaml/yaml"
+	"github.com/google/uuid"
 	"github.com/udonetsm/help/helper"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -21,13 +22,13 @@ type Postgres_conf struct {
 }
 
 type Auth struct {
-	Uid      int64  `json:"uid,omitempty"`
+	Uid      string `json:"uid,omitempty"`
 	Email    string `json:"email,omitempty"`
 	Password string `json:"password,omitempty"`
 }
 
 type User struct {
-	Uid   int64  `json:"uid,omitempty"`
+	Uid   string `json:"uid,omitempty"`
 	Email string `json:"email,omitempty"`
 	Name  string `json:"name,omitempty"`
 	Dob   string `json:"dob,omitempty"`
@@ -93,6 +94,7 @@ func (conf Srver_Conf) ServerConf(path string) Srver_Conf {
 
 func (user *AUser) BuildUser(w http.ResponseWriter, r *http.Request) []byte {
 	r.ParseForm()
+	user.User.Uid = uuid.New().String()
 	user.User.Name = r.FormValue("name")
 	user.User.Dob = r.FormValue("date")
 	user.User.Email = r.FormValue("email")
