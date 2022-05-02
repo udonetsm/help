@@ -6,7 +6,6 @@ import (
 	"log"
 	"os"
 
-	"github.com/udonetsm/help/helper"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -35,6 +34,8 @@ func Sha512Hasher(for_hsh string) string {
 
 func BcryptHasher(str string) string {
 	hash, err := bcrypt.GenerateFromPassword([]byte(str), 10)
-	helper.Errors(err, "generatefrompassword(bcrypt, hash)")
+	if err != nil {
+		log.Fatal(err)
+	}
 	return string(hash)
 }
