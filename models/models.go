@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
+	"strings"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/go-yaml/yaml"
@@ -95,19 +96,19 @@ func (conf Srver_Conf) ServerConf(path string) Srver_Conf {
 func (user *AUser) BuildUser(w http.ResponseWriter, r *http.Request) []byte {
 	r.ParseForm()
 	user.User.Uid = uuid.New().String()
-	user.User.Name = r.FormValue("name")
-	user.User.Dob = r.FormValue("date")
-	user.User.Email = r.FormValue("email")
+	user.User.Name = strings.TrimSpace(r.FormValue("name"))
+	user.User.Dob = strings.TrimSpace(r.FormValue("date"))
+	user.User.Email = strings.TrimSpace(r.FormValue("email"))
 	user.Auth.Email = user.User.Email
 	user.Auth.Uid = user.User.Uid
-	user.Auth.Password = BcryptHasher(r.FormValue("password"))
+	user.Auth.Password = strings.TrimSpace(BcryptHasher(r.FormValue("password")))
 	return Encode(user)
 }
 
 func (auth *Auth) BuildAuth(w http.ResponseWriter, r *http.Request) []byte {
 	r.ParseForm()
-	auth.Email = r.FormValue("email")
-	auth.Password = r.FormValue("password")
+	auth.Email = strings.TrimSpace(r.FormValue("email"))
+	auth.Password = strings.TrimSpace(r.FormValue("password"))
 	return Encode(auth)
 }
 
